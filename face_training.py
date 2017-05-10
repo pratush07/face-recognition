@@ -3,6 +3,7 @@ import cv2, os
 import numpy as np
 from PIL import Image
 from os.path import join
+from play_welcome_audio import welcomeAudioPlay
 # For face detection we will use the Haar Cascade provided by OpenCV.
 cascadePath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascadePath)
@@ -91,6 +92,9 @@ def face_recognize_video(lab_person_map,stream):
             print "{} is Recognized with confidence {}".format(lab_person_map[nbr_predicted], conf)
             cv2.imshow("Recognizing Face", predict_image[y: y + h, x: x + w])
             cv2.waitKey(2)
+        if(conf < 19):
+            welcomeAudioPlay(lab_person_map[nbr_predicted])
+            break  
     cap.release()
     cv2.destroyAllWindows()
 
@@ -98,16 +102,16 @@ def face_recognize_video(lab_person_map,stream):
 for f in os.listdir(training_path):
     os.remove(join(training_path,f))
 # get feed from video device and store image frames in training folder
-inp_subjects = raw_input("Enter number of Subjects")
+inp_subjects = raw_input("Enter number of Subjects ")
 subject = ""
 lab_person_map=[]
 inp_ctr = int(inp_subjects)
 for subj_ctr in range(inp_ctr):
     subject = "subject"+str(subj_ctr)
-    train1 = raw_input("start?(Y/N)")
-    name1 = raw_input("Enter name for label")
-    lab_person_map.append(name1)
-    if train1 == "Y":
+    name1 = raw_input("Enter name for label ")
+    lab_person_map.append(name1.lower())
+    train1 = raw_input("start training?(Y/N) ")
+    if train1.lower() == "y":
         face_train_video(training_path,subject,max_train_images,stream)
     else:
         break

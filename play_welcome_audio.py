@@ -9,7 +9,7 @@ def welcomeAudioPlay(subjectName):
 	savePath = audioFolder + subjectName + ".mp3"
 	if not os.path.exists(savePath):
 		
-		text = "Hello " + subjectName +".Welcome \n.Outside temperature is 23 degrees\n.Have a nice day.";
+		text = "Hello " + subjectName +".Welcome \n.Have a nice day.";
 		urlParams = {'hl': 'en-in','key':key, 'src': text, 'f': '44khz_16bit_stereo','r':-1}
 		f = urllib2.urlopen(urlBase + urllib.urlencode(urlParams))
 		with open(savePath, "wb") as code:

@@ -11,7 +11,7 @@ faceCascade = cv2.CascadeClassifier(cascadePath)
 training_path = './savingvideoframes'
 # For face recognition we will use the the LBPH Face Recognizer 
 recognizer = cv2.createLBPHFaceRecognizer()
-max_train_images = 100
+max_train_images = 200
 stream = 0
 def get_images_and_labels(path):
     # Append all the absolute image paths in a list image_paths
@@ -86,15 +86,20 @@ def face_recognize_video(lab_person_map,stream):
             minSize=(200,200),
             flags = cv2.cv.CV_HAAR_SCALE_IMAGE
         )
-
+        conf = 1000
         for (x,y,w,h) in faces:
             nbr_predicted, conf = recognizer.predict(predict_image[y: y + h, x: x + w])   
             print "{} is Recognized with confidence {}".format(lab_person_map[nbr_predicted], conf)
-            cv2.imshow("Recognizing Face", predict_image[y: y + h, x: x + w])
-            cv2.waitKey(2)
-        if(conf < 19):
-            welcomeAudioPlay(lab_person_map[nbr_predicted])
-            break  
+            # cv2.imshow("Recognizing Face", predict_image[y: y + h, x: x + w])
+            # cv2.waitKey(2)
+            cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+            cv2.putText(img,lab_person_map[nbr_predicted], (x,y-10), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,0,0),2)
+        cv2.imshow('img',img)
+        cv2.waitKey(2)
+
+        # if(conf < 19):
+        #     welcomeAudioPlay(lab_person_map[nbr_predicted])
+        #     break  
     cap.release()
     cv2.destroyAllWindows()
 

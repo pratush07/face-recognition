@@ -1,15 +1,17 @@
 # Import the required modules
 import cv2, os
+from cv2 import *
 import numpy as np
 from PIL import Image
 from os.path import join
+
 # For face detection we will use the Haar Cascade provided by OpenCV.
 cascadePath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascadePath)
 # Path to the training Dataset
 training_path = './savingvideoframes'
 # For face recognition we will use the the LBPH Face Recognizer 
-recognizer = cv2.createLBPHFaceRecognizer()
+recognizer = face.LBPHFaceRecognizer_create()
 max_train_images = 100
 stream = 0
 def get_images_and_labels(path):
@@ -34,7 +36,7 @@ def get_images_and_labels(path):
             scaleFactor=1.1,
             minNeighbors=5,
             minSize=(200, 200),
-            flags = cv2.cv.CV_HAAR_SCALE_IMAGE)
+            flags = cv2.CASCADE_SCALE_IMAGE)
         # If face is detected, append the face to images and the label to labels
         for (x, y, w, h) in faces:
             images.append(image[y: y + h, x: x + w])
@@ -83,7 +85,7 @@ def face_recognize_video(lab_person_map,stream):
             scaleFactor=1.1,
             minNeighbors=5,
             minSize=(200,200),
-            flags = cv2.cv.CV_HAAR_SCALE_IMAGE
+            flags = cv2.CASCADE_SCALE_IMAGE
         )
 
         for (x,y,w,h) in faces:
